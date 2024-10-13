@@ -1,0 +1,268 @@
+---
+title: Shadowdark Template
+subtitle: A template for Shadowdark RPG
+author: John Doe
+format:
+  shadowdark-pdf:
+    cover: assets/images/template_cover.png
+    upper-cover-back: |
+      ![](assets/images/map.png){.fullpage-bg}
+---
+
+``` {.part subtitle="A part can have a subtitle" banner="And a banner with some text"}
+Part 1
+```
+
+# Basics
+
+::: twocolumns
+`Drop caps`{.drop-cap} can be done like this. You can give them an option attribute, if you need special commands. See the lettrine latex package.
+
+#### Global options
+
+You can customize the template through the frontmatter.
+
+If you set `justified: false`, the document is now ragged.
+
+With the cover variable you can set an image to be used as the cover. You can also add images or text to the backside of it through the frontmatter.
+
+For the title page you have three options:
+
+1. Like in this template. This is the default. The title font size is set automatically. If this doesn't look good, you can set it with `title-font-size: number`.
+2. With `title-is-cover: true` the titlepage is styled more like a part and can function as a cover.
+3. If you don't need a titlepage, use `no-title-page: true`
+
+#### Two column mode
+
+You can wrap text inside a two column section. There are some limitations with this
+
+- You need to exclude level 1 headings from these
+- Table support is very limited (see below)
+
+You can however easily switch between one and two columns.
+
+Columns can have a `ragged` class, which allows them to be uneven. The `unbalanced` class is similar, but has its drawbacks. You can try it, if ragged isn't sufficient.
+
+Inside two column mode, prefer to use either level 4 headings or level 3 headings, like in the Shadowdark book.
+
+#### Heading 4
+
+These are the normal headings in two column mode.
+
+#### A simple Table
+
+Inside two columns mode, only very simple tables are supported and need special syntax. For table headings use level 5 headings.
+
+##### TABLE
+
+| d6   | Effect   |
+| :--: | :------: |
+| 1    | nostrud  |
+| 2    | ipsum    |
+| 3    | fugiat   |
+| 4    | irure    |
+| 5    | labore   |
+| 6    | nulla    |
+
+Table: twocolumn
+
+#### Images
+
+This template has some utility functions for images. Just give an image the class you want to use.
+
+These options are available:
+
+**fullpage:** Starts a new page and fills it with the image. If you give the `.stretch` class also, it ignores the aspect ratio to fill the space completly. 
+
+**fullpage-bg:** Similar to above, but doesn't start a new side and inserts the image as the background of the current page.
+
+**wrap:** Wrap text around the image. Accepts two attributes. `position` can be "l", "r" or "c" and determines where the image is inserted. Defaults to "l". `wx` is a number between 0 and 1 and describes the percentile width of the image.
+
+**fill:** Inserts the image in float mode. Places it where it fits as is.
+
+**wide:** As fill, but the image has the width of the text.
+
+**bottom:** Place the image directly at the bottom margin.
+
+**bottom-left:** Place the image at the bottom left cólumn.
+
+**bottom-right:** Place the image at the bottom right cólumn.
+
+**place:** Place the image by hand.
+
+![](assets/images/cave_small.png){.bottom}
+:::
+
+# Monster Statistics
+
+::: twocolumns
+### Header 3
+
+You can use a json file with monster stats and codeblocks with the monster class to show them. You could also give the monster stats directly as json in one such codeblock. This supports images, if they are given in the json. Of course you can also just format them yourself. 
+
+``` monster
+Bandit
+```
+
+``` monster
+{
+    "name": "Black Pudding",
+    "description": "A black, ice-cold mass of sludge.",
+    "actions": [
+      {
+        "name": "Impervious",
+        "description": "Only damaged by fire."
+      },
+      {
+        "name": "Corrosive",
+        "description": "Wood or metal that touches the ooze dissolves on a d6 roll of 1-3."
+      }
+    ],
+    "stats": [2,-1,3,-4,-3,-4],
+    "ac": 9,
+    "hp": 30,
+    "attack": "3 tentacle +4 (2d6)",
+    "movement": "near (climb)",
+    "alignment": "N",
+    "level": 6
+}
+```
+:::
+
+## Short Monster stats
+
+If you want to include short statblocks, for example in adventures, you can do it like this.
+
+:::::: {.columns .ragged}
+::: column
+``` {.monster .short}
+Ape
+```
+:::
+
+::: column
+``` {.monster .short}
+Bandit
+```
+:::
+::::::
+
+# Spells
+
+::: {.columns .unbalanced}
+Spells work similar to monsters.
+
+``` spell
+Alarm
+```
+
+``` spell
+{
+    "name": "Burning Hands",
+    "description": "You spread your fingers with thumbs touching, unleashing a circle of flame that roars out to a close area around where you stand.\n\nCreatures within the area of effect take 1d6 damage, and flammable objects catch fire.",
+    "tier": 1,
+    "classes": [
+      "wizard"
+    ],
+    "duration": "Instant",
+    "range": "Close"
+  }
+```
+
+``` spell
+Create Undead
+```
+
+![](assets/images/wizard.png){.bottom-right}
+:::
+
+![](assets/images/monster_page.png){.fullpage}
+
+``` {.part subtitle="A 1st-level adventure for Shadowdark RPG"}
+Adventures
+```
+
+# Overview
+
+#### Header 4
+
+Adventures use a single column.
+
+#### BACKGROUND
+
+Adipisicing elit occaecat et ut aute. Adipisicing veniam anim nulla fugiat aliquip duis ad. Do commodo eu consequat exercitation elit. Do do amet consectetur do veniam in. Quis ad enim ullamco eiusmod exercitation et id veniam enim aute ea et pariatur Lorem. Et eu ex eiusmod sint cupidatat est.
+
+Consequat anim ullamco velit voluptate labore. Incididunt cillum sunt pariatur Lorem elit occaecat deserunt eu labore et quis labore voluptate. Velit fugiat ea incididunt eu consectetur anim amet eu ex. Officia commodo amet ipsum voluptate elit. Enim minim mollit dolor nisi officia aliqua veniam laboris. Et dolore et reprehenderit sint esse magna eu. Do adipisicing incididunt et veniam est laboris labore do officia amet.
+
+#### FACTIONS
+
+###### Consequat
+
+Tempor enim exercitation ut veniam ex commodo amet do. Do ea dolore nostrud proident culpa. Ea laboris veniam dolor do dolore eiusmod veniam incididunt sint reprehenderit adipisicing. Et exercitation fugiat aute eu et Lorem tempor esse qui.
+
+###### Mminim
+
+Incididunt elit velit fugiat velit id adipisicing do pariatur laboris. Sunt aute aliquip occaecat ipsum duis et. Consectetur laborum amet officia fugiat. Elit tempor labore amet elit cillum est et ullamco. Do sunt nisi ex minim magna nostrud Lorem aute laborum minim eiusmod. Ad esse labore minim sunt esse occaecat voluptate duis amet sit aute dolore do.
+
+#### Ullamco
+
+Consequat sint ipsum non non incididunt. Aute consectetur occaecat ullamco incididunt voluptate consequat veniam ea. Sint esse consequat duis do. Dolore adipisicing excepteur eiusmod quis laborum.
+
+Ea cillum aliquip amet veniam tempor et culpa ipsum non. Eiusmod adipisicing eu reprehenderit eu ut sunt eu. Do sunt fugiat laboris irure ut. Laborum eu non minim sunt sit. Ullamco minim anim irure dolor fugiat pariatur culpa id consequat in in. Magna dolore ad nisi tempor do adipisicing ex ea et Lorem amet elit.
+
+#### Exercitation
+
+Id pariatur fugiat culpa sint nulla excepteur ea ad consectetur ut magna nostrud. Cillum ut cupidatat incididunt qui dolore irure incididunt est labore labore nisi. Tempor consequat consectetur sint incididunt sit consectetur fugiat non fugiat in. Irure consectetur dolor anim tempor et fugiat.
+
+Magna magna sint amet sint fugiat eiusmod nisi nostrud tempor in. Cupidatat fugiat non esse minim voluptate occaecat voluptate esse. Cupidatat culpa esse enim occaecat do laboris eiusmod anim exercitation dolor. Qui consectetur exercitation Lorem consequat fugiat occaecat voluptate ex commodo ea nulla quis est ad.
+
+##### RUMORS
+
+| **d6**   | **Description**                                              | 
+| :------: | :----------------------------------------------------------- |
+| 1        | Tempor enim exercitation ut veniam.                          |
+| 2        | Consectetur laborum amet officia fugiat.                     |
+| 3        | Ad esse labore minim sunt esse occaecat.                     |
+| 4        | Officia occaecat nostrud ut ex id do labore.                 |
+| 5        | Est Lorem do velit quis nulla eiusmod pariatur est deserunt. |
+| 6        | Sit culpa id eiusmod do irure culpa aute.                    |
+
+# Areas
+
+#### Danger Level
+
+Unsafe. Check for an encounter every 3 crawling rounds or after the PCs make loud noises (1d6, 1 = encounter).
+
+##### Encounters
+
+| **d12**    | **Details**                                                     | 
+| :--------: | :-------------------------------------------------------------- |
+| 1          | Dolore qui do consectetur exercitation exercitation             |
+| 2          | Pariatur qui enim irure elit ipsum incididunt ut magna          |
+| 3          | Consequat officia dolor amet ut sit ullamco eiusmod nostrud     |
+| 4          | Laborum laborum elit cillum nulla laboris                       |
+| 5          | Ut veniam cupidatat ipsum nulla                                 |
+| 6          | Sit ex ipsum pariatur ut Lorem                                  |
+| 7          | Ipsum ex officia voluptate irure eiusmod                        |
+| 8          | Exercitation et proident eu mollit                              |
+| 9          | Est incididunt deserunt nisi magna nostrud                      |
+| 10         | Quis culpa Lorem aliquip cupidatat ut quis                      |
+| 11         | Et laboris dolor ad Lorem nisi cillum excepteur                 |
+| 12         | Dolore ipsum enim nostrud culpa eiusmod                         |
+
+![](assets/images/sword_small.png){.wide}
+
+## 1. Header 2 for areas
+
+**Pariatur** Ullamco reprehenderit nostrud elit veniam id enim sint cillum. **Eu sint** sunt id consectetur officia sunt commodo ex enim fugiat elit magna in consequat. **Adipisicing** Dolor adipisicing cillum reprehenderit consequat id ex deserunt proident ut esse enim mollit.
+
+- **Commodo:** Ipsum pariatur in et commodo quis cillum. Ea ex laborum sit labore.
+- **Est:** Dolor est incididunt occaecat cillum est minim eiusmod commodo id. Consectetur enim tempor laboris nulla consectetur labore dolore amet.
+- **Id officia:** Lorem nisi exercitation ex nisi elit nisi. Eiusmod ullamco consectetur est in sunt Lorem est anim. Adipisicing dolor incididunt exercitation nostrud. Quis dolor officia exercitation esse fugiat consequat sint ut ipsum et nulla. Eu ipsum eiusmod ea ut nostrud voluptate non velit ad. Ea cupidatat Lorem nulla tempor ullamco nostrud eu.
+
+## 2. Adipisicing 
+
+**Eiusmod** ex enim laborum adipisicing eu ut ex sint tempor anim do. **Commodo Lorem** cupidatat non aute enim. **Veniam** adipisicing dolor et esse. 
+
+- **Labore:** Occaecat minim duis proident Lorem esse consequat adipisicing consequat ex velit incididunt. Aute enim laborum elit enim Lorem est. Cillum culpa sint ipsum qui sit qui incididunt ut ipsum enim non veniam velit anim. Quis cillum consequat tempor minim voluptate exercitation tempor aliqua minim exercitation eu consequat.
+- **Consectetur:** Velit nisi aliquip fugiat ex consequat occaecat irure officia incididunt esse. Exercitation aliquip exercitation qui tempor. Adipisicing nisi laborum officia voluptate pariatur laborum dolore fugiat laboris ut commodo et voluptate ipsum. Aliqua voluptate aliquip id adipisicing velit veniam. 

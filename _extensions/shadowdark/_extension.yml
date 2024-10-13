@@ -1,0 +1,81 @@
+title: Shadowdark
+version: 1.0.0
+quarto-required: ">=1.4.0"
+contributes:
+  formats:
+    common:
+      lang: en
+      justified: true
+      toc: true
+      toc-depth: 3
+      title-is-cover: false
+      monsters:
+        data-folder: "assets/monsters/"
+        color-images: false
+        images: true
+        alternative-layaout: false
+        short-alternative-layaout: false
+      spells-data: "assets/spells.json"
+      title-line: "assets/ShadowDark_Page-Art_Line_A.png"
+      title-deco: "assets/ShadowDark_Page-Art_Triangle_01.png"
+      title-logo: "assets/Third Party Shadowdark Logo Black.png"
+      title-left-art: "assets/ShadowDark_Page-Art_Tree_01.png"
+      title-right-art: "assets/ShadowDark_Page-Art_Tree_02.png"
+      header-bg: "assets/ShadowDark_Page-Art_Header_02.png"
+      header-spot: "assets/ShadowDark_Spot-Art_001.png"
+      cc-by-logo: "assets/cc_by.svg"
+      filters:
+        - filters/part.lua
+        - filters/monster-block.lua
+        - filters/spell-block.lua
+        - filters/drop-cap.lua
+      legal:
+        art: |
+          This work includes artwork from [https://arcanum-rpg-studio.itch.io/rt-assets-shadowdark](https://arcanum-rpg-studio.itch.io/rt-assets-shadowdark). The artwork is licensed under the Creative Commons Attribution 4.0 International License available at [https://creativecommons.org/licenses/by/4.0/legalcode](https://creativecommons.org/licenses/by/4.0/legalcode).
+        fonts: |
+          JSL Blackletter font © 2023 Jeffrey S. Lee.\
+          Old Newspaper Types font © 2023 Manfred Klein.\
+          Montserrat font family © 2023 Julieta Ulanovsky, Sol Matas, Juan Pablo del Peral, Jacques Le Bailly.
+        shadowdark-license: |
+          This work is an independent product published under the Shadowdark RPG Third-Party License and is not affiliated with The Arcane Library, LLC. Shadowdark RPG © 2023 The Arcane Library, LLC.
+        license: |
+          This work is licensed under the Creative Commons Attribution 4.0 International License. This work uses material licensed by the Shadowdark RPG Third-Party License, and that material is not included in this license. To view a copy of this license, visit [http://creativecommons.org/licenses/by/4.0/](http://creativecommons.org/licenses/by/4.0/) or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+    pdf:
+      pdf-engine: lualatex
+      spacing: onehalfspacing
+      columnsep: 20pt
+      documentclass: scrreprt
+      classoption:
+        - a5paper
+        - titlepage=firstiscover
+        - toc=flat
+      geometry: 
+        - a5paper
+        - top=1.25cm
+        - bottom=1.5cm
+        - left=1cm
+        - right=1cm
+      mainfont: Montserrat
+      sansfont: Old Newspaper Font
+      monofont: cascadia-code
+      displayfont: JSL Blackletter
+      fontsize: 10pt
+      urlcolor: black
+      # instead of auto adjusting the font size, you can give one here
+      title-font-size: false
+      # ir using title-is-cover, this adjusts where the title is displayed
+      title-top-spacing: "1cm"
+      page-number-adjustment: "-0.8"
+      top-margin: "1.25cm"
+      bottom-margin: "1.5cm"
+      left-margin: "1cm"
+      right-margin: "1cm"
+      filters:
+        - filters/columns.lua
+        - filters/alignment.lua
+        - filters/text-size.lua
+        - filters/image.lua
+        - filters/twocolumn-table.lua
+      template-partials:
+        - before-title.tex
+    html: default

@@ -1,0 +1,376 @@
+% ------------------------------------------------------------------------------------- %
+%                                        PACKAGES                                       %
+% ------------------------------------------------------------------------------------- %
+\usepackage[$spacing$]{setspace}
+\usepackage{etoolbox}
+\usepackage[most]{tcolorbox}
+\tcbset{beforeafter skip balanced = 0.5\baselineskip plus 2pt}
+\usepackage{calc}
+\usepackage{xparse}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc}
+\usepackage{tikzpagenodes}
+\usepackage{enumitem}
+\usepackage[explicit]{titlesec}
+\usepackage{eso-pic}
+\usepackage{multicol}
+$if(toc)$
+\usepackage[toc]{multitoc}
+$endif$
+\usepackage{dblfloatfix}
+\usepackage{scrlayer-scrpage}
+\usepackage{wrapfig}
+\usepackage{tabularray}
+
+% ------------------------------------------------------------------------------------- %
+%                                         BASICS                                        %
+% ------------------------------------------------------------------------------------- %
+% ------------------------------------ Text Layout ------------------------------------ %
+$if(justified)$
+$else$
+\usepackage[document]{ragged2e}
+$endif$
+
+% --------------------------------------- Fonts --------------------------------------- %
+\newfontfamily{\displayfont}{$displayfont$}
+
+\usepackage{lettrine}
+\renewcommand\LettrineFontHook{\displayfont}
+
+% -------------------------------------- Spacing -------------------------------------- %
+$if(columnsep)$
+\setlength{\columnsep}{$columnsep$}
+$endif$
+\setlength{\intextsep}{10pt}
+
+% --------------------------------------- Lists --------------------------------------- %
+\setlist[description]{
+  font=\normalfont\bfseries,
+}
+\renewcommand{\labelitemi}{$$\bullet$$}
+\renewcommand{\labelitemii}{\textbullet}
+\renewcommand{\labelitemiii}{\textbullet}
+
+% ------------------------------------ Toc Entries ------------------------------------ %
+\setkomafont{partentry}{\normalfont\large\bfseries}
+\setkomafont{chapterentry}{\normalfont\bfseries}
+
+% ------------------------------------- No Labels ------------------------------------- %
+\renewcommand*{\figureformat}{}
+\renewcommand*{\tableformat}{}
+\renewcommand*{\captionformat}{}
+
+% ------------------------------------ Table Rules ------------------------------------ %
+\renewcommand{\toprule}[2]{}
+\renewcommand{\bottomrule}[2]{}
+
+% --------------------------------------- Footer -------------------------------------- %
+\clearscrheadfoot
+\ofoot*{%
+  \ifthispageodd{%
+    \begin{tikzpicture}[overlay,remember picture]
+      \node[black] at ($$(current page text area.south east)+(0,$page-number-adjustment$)$$) {\pagemark};
+    \end{tikzpicture}%
+  }{%
+    \begin{tikzpicture}[overlay,remember picture]
+      \node[black] at ($$(current page text area.south west)+(0.15,$page-number-adjustment$)$$) {\pagemark};
+    \end{tikzpicture}%
+  }
+}
+
+
+% ------------------------------------------------------------------------------------- %
+%                                       SECTIONING                                      %
+% ------------------------------------------------------------------------------------- %
+\titleclass{\part}{top}
+\titlespacing*{\part}{0pt}{0cm}{0pt}
+\titleformat{\part}[block]%
+  {\fontsize{46}{30}\selectfont\displayfont}%format
+  {}%label
+  {0pt}%sep
+  {%
+    \vspace{-1cm}
+    \begin{center}
+    #1
+  }%before
+  [{%
+    \vspace{-6mm}
+    \includegraphics[width=\linewidth]{$title-line$}
+    \end{center}
+  }]%after
+
+\titleformat{\chapter}[block]
+{}
+{}%label
+{0pt}%sep
+{\begin{tikzpicture}[overlay,remember picture]
+  \fill[black] (current page.north west) rectangle ($$(current page.north east)+(0,-3)$$);
+  \node[white] at ($$(current page.north)+(0,-1.5)$$) {\fontsize{33}{30} \selectfont\sffamily{#1}};
+\end{tikzpicture}}
+[]%after
+\titlespacing*{\chapter}{0pt}{0pt}{4mm}
+
+\titleformat{\section}[block]%
+  {\Large\bfseries}%format
+  {}%label
+  {0pt}%sep
+  {#1}%before
+  [{\titlerule[1pt]}]%after
+\titlespacing*{\section}{0pt}{0pt}{0pt}
+
+\titleformat{\subsection}[display]%
+{}%format
+{}%label
+{0pt}%sep
+{\colorbox{black}{\parbox{\dimexpr\columnwidth}{\vspace{4pt}\centering\Large\normalfont\bfseries\color{white}#1\vspace{4pt}}}}
+[]%after
+\titlespacing*{\subsection}{0pt}{2pt}{-2pt}
+
+\titleformat{\subsubsection}[display]%
+{\Large\bfseries}%format
+{}%label
+{0pt}%sep
+{#1}%before
+[]%after
+\titlespacing*{\subsubsection}{0pt}{0pt}{-4pt}
+
+\titleformat{\paragraph}[display]%
+{}%format
+{}%label
+{0pt}%sep
+{\colorbox{black}{\parbox{\dimexpr\columnwidth}{\vspace{4pt}\centering\Large\normalfont\bfseries\color{white}#1\vspace{4pt}}}}
+[]%after
+\titlespacing*{\paragraph}{0pt}{2pt}{-8pt}
+
+\titleformat{\subparagraph}[runin]%
+{\large\bfseries}%format
+{}%label
+{0pt}%sep
+{#1}%before
+[{\:}]%after
+\titlespacing*{\subparagraph}{0pt}{0pt}{0pt}
+
+% ------------------------------------------------------------------------------------- %
+%                                         TITLE                                         %
+% ------------------------------------------------------------------------------------- %
+
+% ---------------------------------- Titlepage Macro ---------------------------------- %
+\newcommand{\shadowdarkTitlePage}{%
+  \clearpage
+  \thispagestyle{empty}
+  \AddToShipoutPictureBG*{\put(0.3cm,2cm){\includegraphics[height=17cm]{$title-left-art$}}}
+  \AddToShipoutPictureBG*{\put(\pagewidth - 3cm,2cm){\includegraphics[height=17cm]{$title-right-art$}}}
+
+  \newgeometry{left=31mm,right=32mm, top=2cm, bottom=1.25cm}
+
+  \begin{center}
+
+  $if(title-font-size)$
+  \fontsize{$title-font-size$}{10}\selectfont\displayfont{$title$}
+  $else$
+  \resizebox{\textwidth}{!}{\displayfont{$title$}}
+  $endif$
+  
+  \vspace{-1mm}
+  \includegraphics[width=\textwidth]{$title-line$}
+
+  $if(subtitle)$
+  \vspace{-5mm}
+  \sffamily\large{$subtitle$}
+  \vspace{-2mm}
+  $else$
+  \vspace{-3mm}
+  $endif$
+  \end{center}
+
+  $if(author)$
+  \footnotesize\textbf{Writing, Design, Layout}
+  \vspace{3pt}
+  \hrule
+  \vspace{-3pt}
+
+  \scriptsize
+  $author$
+  $endif$
+
+  $if(legal.art)$
+  \footnotesize\textbf{Art}
+  \vspace{3pt}
+  \hrule
+  \vspace{-3pt}
+
+  \scriptsize
+  $legal.art$
+  $endif$
+
+  $if(legal.fonts)$
+  \footnotesize\textbf{Fonts}
+  \vspace{3pt}
+  \hrule
+  \vspace{-3pt}
+
+  \scriptsize
+  $legal.fonts$
+  $endif$
+
+  $if(legal.license)$
+  \footnotesize\textbf{Legal Information and Attribution Statement}
+  \vspace{3pt}
+  \hrule
+  \vspace{-3pt}
+  
+  \scriptsize
+  $elseif(legal.shadowdark-license)$
+  \footnotesize\textbf{Legal Information and Attribution Statement}
+  \vspace{3pt}
+  \hrule
+  \vspace{-3pt}
+  
+  \scriptsize
+  $endif$
+  $if(legal.shadowdark-license)$
+  $legal.shadowdark-license$
+  
+  $endif$
+  $if(legal.license)$
+  $legal.license$
+  $endif$
+
+  \begin{center}
+  \vfill
+  \includegraphics[width=5cm]{$title-logo$}
+  \end{center}
+  \clearpage
+  \restoregeometry
+  \normalsize
+}
+
+% --------------------------------- Titlepage is Cover -------------------------------- %
+\newcommand{\shadowdarkTitlePageAsCover}{%
+  \clearpage
+  \thispagestyle{empty}
+  \begin{center}
+  \vspace*{$title-top-spacing$}
+  \color{black}%
+  \fontsize{46}{30}\selectfont\displayfont{$title$}
+
+  \vspace{-6mm}
+  \includegraphics[width=\linewidth]{$title-line$}
+  
+  \vspace{-5mm}
+  $if(subtitle)$
+  \sffamily\normalsize\bfseries{$subtitle$}
+  $endif$
+
+  $if(subtitle)$
+  \vspace{-4mm}
+  $else$
+  \vspace{-2mm}
+  $endif$
+  
+  $if(author)$
+  \sffamily\LARGE\bfseries{$author$}
+  $else$
+  \vspace{4mm}
+  $endif$
+
+  \includegraphics{$title-deco$}
+
+  \vfill
+  \includegraphics[width=8cm]{$title-logo$}
+  \end{center}
+
+  \clearpage
+  \normalsize
+}
+
+% -------------------------------------- Backside ------------------------------------- %
+\newcommand{\makecoverback}{%
+  \clearpage
+  \addtocounter{page}{-1}
+  \thispagestyle{empty}
+  \begin{center}
+    $if(upper-cover-back)$
+      \small{$upper-cover-back$}
+    $endif$
+    $if(lower-cover-back)$
+      \phantom{Copyright}
+      \vfill
+      \small{$lower-cover-back$}
+    $endif$
+  \end{center}
+}
+
+\newcommand{\makelegalback}{%
+  \clearpage
+  \thispagestyle{empty}
+  \begin{center}
+  $if(legal.shadowdark-license)$
+    \small{$legal.shadowdark-license$}
+  
+  $endif$
+  $if(legal.art)$
+    \small{$legal.art$}
+  
+  $endif$
+  $if(legal.fonts)$
+    \small{$legal.fonts$}
+  $endif$
+
+  $if(legal.license)$
+    \phantom{Copyright}
+    \vfill
+    \small{$legal.license$}
+  $endif$
+  \end{center}
+}
+
+\newcommand{\maketitlepageback}{%
+  \clearpage
+  \thispagestyle{empty}
+  \begin{center}
+  $if(upper-titlepage-back)$
+    \small{$upper-titlepage-back$}
+  $endif$
+  $if(lower-titlepage-back)$
+    \phantom{Copyright}
+    \vfill
+    \small{$lower-titlepage-back$}
+  $endif$
+  \end{center}
+}
+
+% ------------------------------------- Maketitle ------------------------------------- %
+\NewCommandCopy{\oldmaketitle}{\maketitle}
+\renewcommand{\maketitle}{%
+  $if(cover)$
+    \phantom{cover}\AddToShipoutPictureFG*{\includegraphics[width=\paperwidth, height=\paperheight, keepaspectratio=false]{$cover$}}
+    \addtocounter{page}{-1}
+    \thispagestyle{empty}
+
+    $if(upper-cover-back)$
+      \makecoverback
+    $elseif(lower-cover-back)$
+      \makecoverback
+    $else$
+      \cleardoublepage
+    $endif$
+  $endif$
+
+  $if(no-title-page)$
+  $else$
+    $if(title-is-cover)$
+      \shadowdarkTitlePageAsCover
+      $if(legal)$
+        \makelegalback
+      $endif$
+    $else$
+      \shadowdarkTitlePage
+    $endif$
+    $if(upper-titlepage-back)$
+      \maketitlepageback
+    $elseif(lower-titlepage-back)$
+      \maketitlepageback
+    $endif$
+  $endif$
+}
