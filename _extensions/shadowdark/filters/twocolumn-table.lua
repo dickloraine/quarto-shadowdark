@@ -35,7 +35,7 @@ end
 
 if FORMAT:match("latex") then
     function Table(tbl)
-        if stringify(tbl.caption.long) ~= "twocolumn" then
+        if stringify(tbl.caption.long) ~= "twocolumns" then
             return
         end
        

@@ -64,7 +64,7 @@ Inside two columns mode, only very simple tables are supported and need special 
 | 5    | labore   |
 | 6    | nulla    |
 
-Table: twocolumn
+Table: twocolumns
 
 #### Images
 
