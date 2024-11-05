@@ -13,8 +13,8 @@ contributes:
         data-folder: "assets/monsters/"
         color-images: false
         images: true
-        alternative-layaout: false
-        short-alternative-layaout: false
+        alternative-layout: false
+        short-alternative-layout: false
       spells-data: "assets/spells.json"
       title-line: "assets/ShadowDark_Page-Art_Line_A.png"
       title-deco: "assets/ShadowDark_Page-Art_Triangle_01.png"

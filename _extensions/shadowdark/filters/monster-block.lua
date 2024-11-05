@@ -91,66 +91,71 @@ function hasPlusMinus(s)
     return t == "-" or t == "+"
 end
 
-function getStatBlockBuilders(monster, short)
-    local stats = Inlines({})
-    local armor = monster.armorClass
+function getArmorText(monster, short)
+    local armor = tostring(math.floor(monster.armorClass))
     if monster.armor and monster.armor ~= "" and not short then
-        armor = armor .. "(" .. monster.armor .. ")"
+        return armor .. " (" .. monster.armor .. ")"
+    end
+    return armor
+end
+
+function getStatBlockLayout(cb)
+    local order = {"AC", "HP", "ATK", "MV", "S", "D", "C", "I", "W", "Ch", "AL", "LV"}
+    local breaks = {LV=Str("")}
+    local short = false
+
+    if cb.classes:includes("short") then
+        short = true
     end
 
-    function add_stat(name, value, sep)
-        stats:insert(Strong(name))
+    if ((options['alternative-layout'] and not short) or (options['short-alternative-layout'] and short) or cb.classes:includes("alt")) then
+        order = {"AC", "HP", "MV", "ATK", "S", "D", "C", "I", "W", "Ch", "AL", "LV"}
+        breaks = {MV=LineBreak(), ATK=LineBreak(), Ch=LineBreak(), LV=Str("")}
+    end
+
+    return order, breaks, short
+
+end
+
+function getStats(monster, short)
+    return {
+        AC=getArmorText(monster, short),
+        HP=monster.maxHitPoints,
+        ATK=monster.attackText,
+        MV=monster.movement,
+        S=monster.stats.str_mod,
+        D=monster.stats.dex_mod,
+        C=monster.stats.con_mod,
+        I=monster.stats.int_mod,
+        W=monster.stats.wis_mod,
+        Ch=monster.stats.cha_mod,
+        AL=monster.alignment:sub(1, 1),
+        LV=monster.level,
+    }
+end
+
+function getStatBlock(monster, cb)
+    local stats = Inlines({})
+    order, breaks, short = getStatBlockLayout(cb)
+
+    local statMap = getStats(monster, short)
+
+    for _, stat in ipairs(order) do
+        local value = statMap[stat]
+        stats:insert(Strong(stat))
         if type(value) == "number" then
             value = tostring(math.floor(value))
         end
-        if not short and stat_names:includes(name) and not hasPlusMinus(value) then
+        if not short and stat_names:includes(stat) and not hasPlusMinus(value) then
             value = "+" .. value
         end
         stats:insert(Str(" " .. value))
-        if not sep then
-            stats:insert(Str(", "))
+        if breaks[stat] then
+            stats:insert(breaks[stat])
         else
-            stats:insert(sep)
+            stats:insert(Str(", "))
         end
     end
-
-    return stats, armor, add_stat
-end
-
-function getStatBlock(monster, short)
-    local stats, armor, add_stat = getStatBlockBuilders(monster, short)
-
-    add_stat("AC", armor)
-    add_stat("HP", monster.maxHitPoints)
-    add_stat("ATK", monster.attackText)
-    add_stat("MV", monster.movement)
-    add_stat("S", monster.stats.str_mod)
-    add_stat("D", monster.stats.dex_mod)
-    add_stat("C", monster.stats.con_mod)
-    add_stat("I", monster.stats.int_mod)
-    add_stat("W", monster.stats.wis_mod)
-    add_stat("Ch", monster.stats.cha_mod)
-    add_stat("AL", monster.alignment:sub(1, 1))
-    add_stat("LV", monster.level, Str(""))
-
-    return stats
-end
-
-function getAltStatBlock(monster, short)
-    local stats, armor, add_stat = getStatBlockBuilders(monster, short)
-
-    add_stat("AC", armor)
-    add_stat("HP", monster.maxHitPoints)
-    add_stat("MV", monster.movement, LineBreak())
-    add_stat("ATK", monster.attackText, LineBreak())
-    add_stat("S", monster.stats.str_mod)
-    add_stat("D", monster.stats.dex_mod)
-    add_stat("C", monster.stats.con_mod)
-    add_stat("I", monster.stats.int_mod)
-    add_stat("W", monster.stats.wis_mod)
-    add_stat("Ch", monster.stats.cha_mod, LineBreak())
-    add_stat("AL", monster.alignment:sub(1, 1))
-    add_stat("LV", monster.level, Str(""))
 
     return stats
 end
@@ -185,17 +190,13 @@ end
 function getMonsterBlock(monster, cb)
     local content = Inlines({})
 
-    content:insert(Header(3, monster.name))
+    content:insert(Header(3, string.upper(monster.name)))
     content:insert(Para(Emph(monster.description)))
     local image = getImage(monster, cb)
     if image then
         content:insert(Para(image))
     end
-    if (options['alternative-layaout'] or cb.classes:includes("alt")) then
-        content:insert(Para(getAltStatBlock(monster)))
-    else
-        content:insert(Para(getStatBlock(monster)))
-    end
+    content:insert(Para(getStatBlock(monster, cb)))
     content:insert(Para(getActions(monster)))
 
     return content
@@ -205,12 +206,7 @@ function getMonsterShortBlock(monster, cb)
     local content = Inlines({})
 
     content:insert(Strong(monster.name))
-    local stats
-    if (options['short-alternative-layaout'] or cb.classes:includes("alt")) then
-        stats = getAltStatBlock(monster, true)
-    else
-        stats = getStatBlock(monster, true)
-    end
+    local stats = getStatBlock(monster, cb)
     stats:insert(LineBreak())
     stats:extend(getActions(monster))
     content:insert(Para(stats))
@@ -239,4 +235,3 @@ return {
     {Meta = Meta},
     {CodeBlock = CodeBlock},
 }
-
