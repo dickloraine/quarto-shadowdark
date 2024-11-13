@@ -67,8 +67,12 @@ function formatMonster(monster)
     return monster
 end
 
-function getMonster(cb)
-    local local_monster = json.decode(cb.text)
+function getMonster(el)
+    local text = el.text
+    if not text then
+        text = stringify(el.content)
+    end
+    local local_monster = json.decode(text)
 
     if local_monster then
         return formatMonster(local_monster)
@@ -78,9 +82,8 @@ function getMonster(cb)
         return
     end
     
-    local name = cb.text
     for _, monster in ipairs(monster_data) do
-        if monster.name == name then
+        if monster.name == text then
             return formatMonster(monster)
         end
     end
@@ -161,7 +164,7 @@ function getStatBlock(monster, cb)
 end
 
 function getActions(monster)
-    local actions = pandoc.Inlines({})
+    local actions = Inlines({})
 
     for i, action in ipairs(monster.actions) do
         if i > 1 then
@@ -190,7 +193,6 @@ end
 function getMonsterBlock(monster, cb)
     local content = Inlines({})
 
-    content:insert(Header(3, string.upper(monster.name)))
     content:insert(Para(Emph(monster.description)))
     local image = getImage(monster, cb)
     if image then
@@ -213,6 +215,21 @@ function getMonsterShortBlock(monster, cb)
     return content
 end
 
+function Header(hd)
+    if not hd.classes:includes("monster") then
+        return
+    end
+
+    local monster = getMonster(hd)
+    if not monster then
+        return
+    end
+
+    local block =  getMonsterBlock(monster, hd)
+    block:insert(1, hd)
+    return block
+end
+
 function CodeBlock(cb)
     if not cb.classes:includes("monster") then
         return
@@ -233,5 +250,6 @@ end
 
 return {
     {Meta = Meta},
+    {Header = Header},
     {CodeBlock = CodeBlock},
 }

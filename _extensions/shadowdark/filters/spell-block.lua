@@ -26,18 +26,18 @@ function Meta(meta)
     spell_data = json.decode(spell_data_json)
 end
 
-function getSpell(cb)
-    local local_spell = json.decode(cb.text)
+function getSpell(hd)
+    -- local local_spell = json.decode(hd.text)
 
-    if local_spell then
-        return local_spell
-    end
+    -- if local_spell then
+    --     return local_spell
+    -- end
 
     if not spell_data then
         return
     end
 
-    local name = cb.text
+    local name = stringify(hd.content)
     for _, spell in ipairs(spell_data) do
         if spell.name == name then
             return spell
@@ -45,14 +45,16 @@ function getSpell(cb)
     end
 end
 
-function getSpellBlock(spell)
+function getSpellBlock(spell, header)
     local container = Inlines({})
     local tier = spell.tier
     if type(tier) == "number" then
         tier = tostring(math.floor(spell.tier))
     end
 
-    container:insert(Header(3, spell.name))
+    if header then
+        container:insert(header)
+    end
     container:insert(Para(Emph("Tier " .. tier .. ", " .. table.concat(spell.classes, ", "))))
     container:insert(Para(Inlines({Strong("Duration: "), Str(spell.duration)})))
     container:insert(Para(Inlines({Strong("Range: "), Str(spell.range)})))
@@ -61,12 +63,25 @@ function getSpellBlock(spell)
     return container
 end
 
+function Header(hd)
+    if not hd.classes:includes("spell") then
+        return
+    end
+
+    local spell = getSpell(hd)
+    if not spell then
+        return
+    end
+
+    return getSpellBlock(spell, hd)
+end
+
 function CodeBlock(cb)
     if not cb.classes:includes("spell") then
         return
     end
 
-    local spell = getSpell(cb)
+    local spell = json.decode(cb.text)
     if not spell then
         return
     end
@@ -77,6 +92,7 @@ end
 
 return {
     {Meta = Meta},
+    {Header = Header},
     {CodeBlock = CodeBlock},
 }
 

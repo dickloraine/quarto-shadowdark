@@ -5,10 +5,8 @@ contributes:
   formats:
     common:
       lang: en
-      justified: true
       toc: true
       toc-depth: 3
-      title-is-cover: false
       monsters:
         data-folder: "assets/monsters/"
         color-images: false
@@ -29,6 +27,8 @@ contributes:
         - filters/monster-block.lua
         - filters/spell-block.lua
         - filters/drop-cap.lua
+        - filters/twocolumn-table.lua
+        - filters/image.lua
       legal:
         art: |
           This work includes artwork from [https://arcanum-rpg-studio.itch.io/rt-assets-shadowdark](https://arcanum-rpg-studio.itch.io/rt-assets-shadowdark). The artwork is licensed under the Creative Commons Attribution 4.0 International License available at [https://creativecommons.org/licenses/by/4.0/legalcode](https://creativecommons.org/licenses/by/4.0/legalcode).
@@ -60,7 +60,9 @@ contributes:
       monofont: cascadia-code
       displayfont: JSL Blackletter
       fontsize: 10pt
+      justified: true
       urlcolor: black
+      title-is-cover: false
       # instead of auto adjusting the font size, you can give one here
       title-font-size: false
       # ir using title-is-cover, this adjusts where the title is displayed
@@ -74,8 +76,16 @@ contributes:
         - filters/columns.lua
         - filters/alignment.lua
         - filters/text-size.lua
-        - filters/image.lua
-        - filters/twocolumn-table.lua
       template-partials:
         - before-title.tex
-    html: default
+    html:
+      theme: shadowdark.scss
+      part-block: true
+      title-block-banner: "#212529"
+      anchor-sections: false
+      repo-actions: false
+      self-host-fonts: false
+      filters:
+        - filters/html-fonts.lua
+        - filters/columns-html.lua
+        - filters/add-legal.lua

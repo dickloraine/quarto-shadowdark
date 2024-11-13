@@ -7,7 +7,9 @@ format:
     cover: assets/images/template_cover.png
     upper-cover-back: |
       ![](assets/images/map.png){.fullpage-bg}
+  shadowdark-html: default
 ---
+
 
 ``` {.part subtitle="A part can have a subtitle" banner="And a banner with some text"}
 Part 1
@@ -74,7 +76,7 @@ These options are available:
 
 **fullpage:** Starts a new page and fills it with the image. If you give the `.stretch` class also, it ignores the aspect ratio to fill the space completly. 
 
-**fullpage-bg:** Similar to above, but doesn't start a new side and inserts the image as the background of the current page.
+**fullpage-bg:** Similar to above, but doesn't start a new page and inserts the image as the background of the current page.
 
 **wrap:** Wrap text around the image. Accepts two attributes. `position` can be "l", "r" or "c" and determines where the image is inserted. Defaults to "l". `wx` is a number between 0 and 1 and describes the percentile width of the image.
 
@@ -98,11 +100,11 @@ These options are available:
 ::: twocolumns
 ### Header 3
 
-You can use a json file with monster stats and codeblocks with the monster class to show them. You could also give the monster stats directly as json in one such codeblock. This supports images, if they are given in the json. Of course you can also just format them yourself. 
+You can use a json file with monster stats and headers with the monster class to show them. You could also give the monster stats directly as json in a codeblock. This supports images, if they are given in the json. Of course you can also just format them yourself. 
 
-``` monster
-Bandit
-```
+### Bandit{.monster}
+
+### Black Pudding
 
 ``` monster
 {
@@ -133,7 +135,7 @@ Bandit
 
 If you want to include short statblocks, for example in adventures, you can do it like this.
 
-:::::: {.columns .ragged}
+:::::: {.columns .ragged .html}
 ::: column
 ``` {.monster .short}
 Ape
@@ -152,9 +154,9 @@ Bandit
 ::: {.columns .unbalanced}
 Spells work similar to monsters.
 
-``` spell
-Alarm
-```
+### Alarm{.spell}
+
+### Burning Hands
 
 ``` spell
 {
@@ -169,11 +171,9 @@ Alarm
   }
 ```
 
-``` spell
-Create Undead
-```
+### Create Undead{.spell}
 
-![](assets/images/wizard.png){.bottom-right}
+![](assets/images/wizard.png){.bottom-right .no-html}
 :::
 
 ![](assets/images/monster_page.png){.fullpage}
@@ -206,9 +206,11 @@ Incididunt elit velit fugiat velit id adipisicing do pariatur laboris. Sunt aute
 
 #### Ullamco
 
+![](assets/images/wizard.png){.wrap-circle wx="0.28"}
+
 Consequat sint ipsum non non incididunt. Aute consectetur occaecat ullamco incididunt voluptate consequat veniam ea. Sint esse consequat duis do. Dolore adipisicing excepteur eiusmod quis laborum.
 
-Ea cillum aliquip amet veniam tempor et culpa ipsum non. Eiusmod adipisicing eu reprehenderit eu ut sunt eu. Do sunt fugiat laboris irure ut. Laborum eu non minim sunt sit. Ullamco minim anim irure dolor fugiat pariatur culpa id consequat in in. Magna dolore ad nisi tempor do adipisicing ex ea et Lorem amet elit.
+Ea cillum aliquip amet veniam tempor et culpa ipsum non. Eiusmod adipisicing eu reprehenderit eu ut sunt eu. Do sunt fugiat laboris irure ut. Laborum eu non minim sunt sit.
 
 #### Exercitation
 
@@ -266,3 +268,7 @@ Unsafe. Check for an encounter every 3 crawling rounds or after the PCs make lou
 
 - **Labore:** Occaecat minim duis proident Lorem esse consequat adipisicing consequat ex velit incididunt. Aute enim laborum elit enim Lorem est. Cillum culpa sint ipsum qui sit qui incididunt ut ipsum enim non veniam velit anim. Quis cillum consequat tempor minim voluptate exercitation tempor aliqua minim exercitation eu consequat.
 - **Consectetur:** Velit nisi aliquip fugiat ex consequat occaecat irure officia incididunt esse. Exercitation aliquip exercitation qui tempor. Adipisicing nisi laborum officia voluptate pariatur laborum dolore fugiat laboris ut commodo et voluptate ipsum. Aliqua voluptate aliquip id adipisicing velit veniam. 
+
+::: {.content-visible when-format="html"}
+# Legal{.legal}
+:::

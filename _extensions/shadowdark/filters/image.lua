@@ -1,5 +1,6 @@
 local RawInline = pandoc.RawInline
 local Inlines = pandoc.Inlines
+local List = pandoc.List
 local stringify = pandoc.utils.stringify
 
 local bottom_margin = "1.5cm"
@@ -14,9 +15,11 @@ function Meta(meta)
     end
 end
 
-function Image(img)
+function ImageLatex(img)
     local options = img.attributes.options or ""
-    if img.classes:includes("fullpage") then
+    if img.classes:includes("no-pdf") then
+        return {}
+    elseif img.classes:includes("fullpage") then
         local content = Inlines({})
         local stretch = img.classes:includes("stretch") and "keepaspectratio=false," or ""
         content:insert(RawInline('latex', string.format('\\clearpage\\phantom{image}\\AddToShipoutPictureFG*{\\includegraphics[%s%swidth=\\paperwidth, height=\\paperheight]{%s}}', options, stretch, img.src)))
@@ -33,6 +36,20 @@ function Image(img)
         content:insert(RawInline('latex', string.format('\\begin{wrapfigure}{%s}{%s\\textwidth}', position, wx)))
         content:insert(RawInline('latex', '\\centering'))
         content:insert(RawInline('latex', string.format('\\includegraphics[%swidth=%s\\textwidth]{%s}', options, wx, img.src)))
+        content:insert(RawInline('latex', '\\end{wrapfigure}'))
+        return content
+    elseif img.classes:includes("wrap-circle") then
+        local content = Inlines({})
+        local position = img.attributes.position or "l"
+        local wx = img.attributes.wx or "0.47"
+        local cshift = img.attributes.cshift or "0,0"
+        content:insert(RawInline('latex', '\\vspace*{4pt}'))
+        content:insert(RawInline('latex', string.format('\\begin{wrapfigure}{%s}{%s\\textwidth}', position, wx)))
+        content:insert(RawInline('latex', '\\centering'))
+        content:insert(RawInline('latex', '\\begin{tikzpicture}'))
+        content:insert(RawInline('latex', string.format('\\clip (%s) circle (%s\\textwidth);', cshift, wx/2)))
+        content:insert(RawInline('latex', string.format('\\path (0,0) node {\\includegraphics[%swidth=%s\\textwidth]{%s}};', options, wx, img.src)))
+        content:insert(RawInline('latex', '\\end{tikzpicture}'))
         content:insert(RawInline('latex', '\\end{wrapfigure}'))
         return content
     elseif img.classes:includes("fill") then
@@ -84,9 +101,80 @@ function Image(img)
     end
 end
 
+function ImageHTML(img)
+    local options = img.attributes.options or ""
+    if img.attributes["html-class"] then
+        img.classes = List{(img.attributes["html-class"])}
+    end
+    if img.classes:includes("no-html") then
+        return {}
+    elseif img.attributes["html-width"] then
+        img.attributes.width = img.attributes["html-width"]
+        return img
+    elseif img.classes:includes("fullpage") then
+        img.attributes.width = "100%"
+        return img
+    elseif img.classes:includes("fullpage-bg") then
+        img.attributes.width = "100%"
+        return img
+    elseif img.classes:includes("wrap") then
+        local position = img.attributes.position or "l"
+        local wx = img.attributes.wx or 0.47
+
+        local width = 100 * wx
+        local margin = "margin-right: 1em"
+        
+        if position == "r" then
+            position = "right"
+            margin = "margin-left: 1em"
+        else
+            position = "left"
+        end
+
+        img.attributes.style = string.format('position: relative; z-index: 2; width: %s%%; float: %s; %s;', width, position, margin)
+        return img
+    elseif img.classes:includes("wrap-circle") then
+        local content = Inlines({})
+        local position = img.attributes.position or "l"
+        local wx = img.attributes.wx or 0.47
+
+        local width = 100 * wx
+        local margin = "margin-right: 1em"
+        
+        if position == "r" then
+            position = "right"
+            margin = "margin-left: 1em"
+        else
+            position = "left"
+        end
+
+        content:insert(RawInline('html', string.format('<div style="position: relative; z-index: 2; aspect-ratio : 1 / 1; overflow: hidden; border-radius: 50%%; width: %s%%; float:%s; %s;">', width, position, margin)))
+
+        content:insert(RawInline('html', string.format('<img src="%s" alt="" style="width: 100%%;">', img.src)))
+        content:insert(RawInline('html', '</div>'))
+
+        return content
+    elseif img.classes:includes("wide") then
+        img.attributes.width = "100%"
+        return img
+    elseif img.classes:includes("bottom-left") then
+        img.attributes.style = 'width: 48%; float: left; margin-right: 1em; position: relative; z-index: 2;'
+        return img
+    elseif img.classes:includes("bottom-right") then
+        img.attributes.style = 'width: 48%; float: right; margin-left: 1em; position: relative; z-index: 2;'
+        return img
+    end
+    return img
+end
+
 if FORMAT:match("latex") then
     return {
         {Meta = Meta},
-        {Image = Image},
+        {Image = ImageLatex},
+    }
+elseif FORMAT:match("html") then
+    return {
+        {Meta = Meta},
+        {Image = ImageHTML},
     }
 end

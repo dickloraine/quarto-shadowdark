@@ -1,5 +1,6 @@
 local RawInline = pandoc.RawInline
 local Inlines = pandoc.Inlines
+local Div = pandoc.Div
 local Header = pandoc.Header
 local Image = pandoc.Image
 local Strong = pandoc.Strong
@@ -11,6 +12,7 @@ local deco = nil
 local line = nil
 local spot = nil
 local banner = nil
+local block = false
 
 function Meta(meta)
     if meta['title-deco'] then
@@ -24,6 +26,9 @@ function Meta(meta)
     end
     if meta['header-bg'] then
         banner = stringify(meta['header-bg'])
+    end
+    if meta['part-block'] then
+        block = true
     end
   end
 
@@ -85,10 +90,55 @@ function CodeBlockOther(cb)
     return content
 end
 
+function CodeBlockHTML(cb)
+    if not cb.classes:includes("part") then
+        return
+    end
+    local div = Div({})
+
+    if block then
+        div.classes:insert("part-block")
+        div.content:insert(Header(1, cb.text))
+        if cb.attributes.subtitle then
+            div.content:insert(Para(Strong(cb.attributes.subtitle)))
+        end
+        return div
+    end
+
+    div.classes:insert("part")
+
+    div.content:insert(Header(1, cb.text))
+
+    if line then
+        div.content:insert(Image("", line))
+    end
+    
+    if cb.attributes.subtitle then
+        div.content:insert(Para(Strong(cb.attributes.subtitle)))
+    end
+
+    if deco then
+        local deko_img = Image("", deco)
+        deko_img.classes:insert("deco")
+        div.content:insert(deko_img)
+    end
+
+    if cb.attributes.banner then
+        div.content:insert(BlockQuote(cb.attributes.banner))
+    end
+
+    return div
+end
+
 if FORMAT:match("latex") then
     return {
       {Meta = Meta},
       {CodeBlock = CodeBlockLatex},
+    }
+elseif FORMAT:match("html") then
+    return {
+      {Meta = Meta},
+      {CodeBlock = CodeBlockHTML},
     }
 else
     return {

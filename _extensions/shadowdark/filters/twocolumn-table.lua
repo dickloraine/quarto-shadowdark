@@ -57,4 +57,12 @@ if FORMAT:match("latex") then
 
         return content
     end
+else
+    function Table(tbl)
+        if stringify(tbl.caption.long) ~= "twocolumns" then
+            return
+        end
+        tbl.caption.long = {}
+        return tbl
+    end
 end
