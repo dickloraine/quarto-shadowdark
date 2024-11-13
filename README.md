@@ -17,3 +17,7 @@ This will install the extension and create an example qmd file and some addition
 The example file shows and explains how to use this template.
 
 The used fonts are in the _extensions/shadowdark/assets/font directory in this repository.
+
+## Preview
+
+[Quarto Shadowdark Template](https://dickloraine.github.io/quarto-shadowdark/)
