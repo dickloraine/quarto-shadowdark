@@ -46,15 +46,19 @@ contributes:
       columnsep: 20pt
       documentclass: scrreprt
       classoption:
-        - a5paper
         - titlepage=firstiscover
         - toc=flat
-      geometry: 
-        - a5paper
-        - top=1.25cm
-        - bottom=1.5cm
-        - left=1cm
-        - right=1cm
+        - twoside
+      print-publish: false
+      pagesizes:
+        width: 14.8cm
+        height: 21cm
+        left: 1cm
+        right: 1cm
+        top: 1.25cm
+        bottom: 1.5cm
+        bcor: 0cm
+        bleed: 0.32cm
       mainfont: Montserrat
       sansfont: Old Newspaper Font
       monofont: cascadia-code

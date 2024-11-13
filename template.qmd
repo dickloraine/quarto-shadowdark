@@ -176,7 +176,7 @@ Spells work similar to monsters.
 ![](assets/images/wizard.png){.bottom-right .no-html}
 :::
 
-![](assets/images/monster_page.png){.fullpage}
+![](assets/images/monster_page.png){.fullpage .stretch}
 
 ``` {.part subtitle="A 1st-level adventure for Shadowdark RPG"}
 Adventures

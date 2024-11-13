@@ -23,6 +23,30 @@ $endif$
 \usepackage{tabularray}
 
 % ------------------------------------------------------------------------------------- %
+%                                        GEOMETRY                                       %
+% ------------------------------------------------------------------------------------- %
+\newlength{\sdBleed}
+\newlength{\sdLeftAdjust}
+\newlength{\sdRightAdjust}
+$if(print-publish)$
+\setlength\sdBleed{$pagesizes.bleed$}
+\setlength\sdLeftAdjust{$pagesizes.bcor$}
+\setlength\sdRightAdjust{$pagesizes.bleed$}
+$else$
+\setlength\sdBleed{0cm}
+\setlength\sdLeftAdjust{$pagesizes.bcor$/2}
+\setlength\sdRightAdjust{$pagesizes.bcor$/2}
+$endif$
+\usepackage[%
+  paperwidth=$pagesizes.width$+\sdBleed,
+  paperheight=$pagesizes.height$+\sdBleed+\sdBleed,
+  top=$pagesizes.top$+\sdBleed,
+  bottom=$pagesizes.bottom$+\sdBleed,
+  left=$pagesizes.left$+\sdLeftAdjust,
+  right=$pagesizes.right$+\sdRightAdjust
+]{geometry}
+
+% ------------------------------------------------------------------------------------- %
 %                                         BASICS                                        %
 % ------------------------------------------------------------------------------------- %
 % ------------------------------------ Text Layout ------------------------------------ %
@@ -104,8 +128,8 @@ $endif$
 {}%label
 {0pt}%sep
 {\begin{tikzpicture}[overlay,remember picture]
-  \fill[black] (current page.north west) rectangle ($$(current page.north east)+(0,-3)$$);
-  \node[white] at ($$(current page.north)+(0,-1.5)$$) {\fontsize{33}{30} \selectfont\sffamily{#1}};
+  \fill[black] (current page.north west) rectangle ($$(current page.north east)+(0,-3)-(0,\sdBleed)$$);
+  \node[white] at ($$(current page.north)+(0,-1.5)-(0,\sdBleed)$$) {\fontsize{33}{30} \selectfont\sffamily{#1}};
 \end{tikzpicture}}
 []%after
 \titlespacing*{\chapter}{0pt}{0pt}{4mm}
@@ -158,10 +182,10 @@ $endif$
 \newcommand{\shadowdarkTitlePage}{%
   \clearpage
   \thispagestyle{empty}
-  \AddToShipoutPictureBG*{\put(0.3cm,2cm){\includegraphics[height=17cm]{$title-left-art$}}}
-  \AddToShipoutPictureBG*{\put(\pagewidth - 3cm,2cm){\includegraphics[height=17cm]{$title-right-art$}}}
+  \AddToShipoutPictureBG*{\put(0.3cm+\sdLeftAdjust,2cm+\sdBleed){\includegraphics[height=17cm]{$title-left-art$}}}
+  \AddToShipoutPictureBG*{\put(\pagewidth - 3cm - +\sdRightAdjust,2cm+\sdBleed){\includegraphics[height=17cm]{$title-right-art$}}}
 
-  \newgeometry{left=31mm,right=32mm, top=2cm, bottom=1.25cm}
+  \newgeometry{left=21mm+$pagesizes.left$+\sdLeftAdjust,right=22mm+$pagesizes.right$+\sdRightAdjust, top=2.5cm+\sdBleed, bottom=1.25cm+\sdBleed}
 
   \begin{center}
 
