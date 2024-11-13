@@ -5,6 +5,7 @@ local stringify = pandoc.utils.stringify
 
 local bottom_margin = "1.5cm"
 local left_margin = "1cm"
+local image_source = nil
 
 function Meta(meta)
     if meta["bottom-margin"] then
@@ -13,10 +14,30 @@ function Meta(meta)
     if meta["left-margin"] then
         left_margin = stringify(meta["left-margin"])
     end
+    if meta["image-source-directory"] then
+        image_source = stringify(meta["image-source-directory"])
+    end
+end
+
+function file_exists(name)
+    local f = io.open(name, "r")
+    return f ~= nil and io.close(f)
+end
+
+function setImageSource(img)
+    if not image_source then
+        return
+    end
+    local filename = img.src:match("([^/]+)$")
+    local new_src = image_source .. filename
+    if file_exists(new_src) then
+        img.src = new_src
+    end
 end
 
 function ImageLatex(img)
     local options = img.attributes.options or ""
+    setImageSource(img)
     if img.classes:includes("no-pdf") then
         return {}
     elseif img.classes:includes("fullpage") then
@@ -103,6 +124,7 @@ end
 
 function ImageHTML(img)
     local options = img.attributes.options or ""
+    setImageSource(img)
     if img.attributes["html-class"] then
         img.classes = List{(img.attributes["html-class"])}
     end
