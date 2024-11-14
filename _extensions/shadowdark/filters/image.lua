@@ -120,6 +120,7 @@ function ImageLatex(img)
         content:insert(RawInline('latex', string.format('\\AddToShipoutPictureFG*{\\%s{\\put(%s){\\includegraphics[%swidth=%s]{%s}}}}', anchor, position, options, width, img.src)))
         return content
     end
+    return img
 end
 
 function ImageHTML(img)
