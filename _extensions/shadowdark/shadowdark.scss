@@ -1,11 +1,15 @@
 /*-- scss:defaults --*/
 
-$font-family-serif: "Montserrat", serif !default;
+$font-family-serif:     "Montserrat", serif !default;
+$font-size-base:        1.1rem !default;
+$headings-font-weight:  700 !default;
 
-$font-size-base: 1.1rem !default;
-$headings-font-weight: 700 !default;
-$table-border-color: var(--body-color) !default;
-
+$body-color:            #212529 !default;
+$body-bg:               #fff !default;
+$link-color:            #681C23 !default;
+$block-heading-color:   #fff !default;
+$block-heading-bg:      #212529 !default;
+$table-border-color:    $body-color !default;
 
 /*-- scss:rules --*/
 
@@ -15,8 +19,8 @@ $table-border-color: var(--body-color) !default;
         font-size: 3em;
         line-height: 1.5;
         text-align: center;
-        color: var(--body-color);
-        background-color: var(--body-bg);
+        color: $body-color;
+        background-color: $body-bg;
         margin-top: 1.275rem;
         margin-bottom: 0.85rem;
     }
@@ -24,9 +28,21 @@ $table-border-color: var(--body-color) !default;
         font-family: "Old Newspaper Font", $font-family-sans-serif;
         font-size: 1.5em;
         text-align: center;
-        color: var(--body-color);
+        color: $body-color;;
         margin-top: 0em;
         margin-bottom: 0.85rem;
+    }
+
+    .quarto-title-banner {
+        margin-bottom: 0em;
+
+        h1 {
+            color: $block-heading-color;
+            background-color: $block-heading-bg;
+        }
+        .subtitle {
+            color: $block-heading-color;
+        }
     }
 
     .quarto-title-meta {
@@ -71,8 +87,8 @@ $table-border-color: var(--body-color) !default;
 
 .part-block {
     text-align: center;
-    color: $body-bg;
-    background-color: $body-color;
+    color: $block-heading-color;
+    background-color: $block-heading-bg;
 
     h1 {
         font-family: "JSL Blackletter", $font-family-sans-serif;
@@ -93,8 +109,8 @@ h1 {
     font-size: 2em;
     line-height: 1.5;
     text-align: center;
-    color: $body-bg;
-    background-color: $body-color;
+    color: $block-heading-color;
+    background-color: $block-heading-bg;
     margin-bottom: 0.85em;
 }
 
@@ -110,8 +126,8 @@ h3 {
     font-size: 1.25em;
     line-height: 1.5;
     text-align: center;
-    color: $body-bg;
-    background-color: $body-color;
+    color: $block-heading-color;
+    background-color: $block-heading-bg;
     margin-bottom: 0.85em;
 }
 
@@ -126,8 +142,8 @@ h5 {
     font-size: 1.25em;
     line-height: 1.5;
     text-align: center;
-    color: $body-bg;
-    background-color: $body-color;
+    color: $block-heading-color;
+    background-color: $block-heading-bg;
     margin-bottom: -0.3em;
 }
 
@@ -152,33 +168,33 @@ table {
 }
 
 .quarto-banner nav.quarto-secondary-nav {
-    color: $body-bg;
-    background-color: $body-color;
+    color: $block-heading-color;
+    background-color: $block-heading-bg;
 
     .quarto-page-breadcrumbs a {
-        color: $body-bg;
+        color: $block-heading-color;
     }
 
     .breadcrumb-item::before {
-        color: $body-bg;
+        color: $block-heading-color;
     }
 
     .quarto-btn-toggle {
-        color: $body-bg;
+        color: $block-heading-color;
     }
 }
 
 .quarto-title-banner {
     .breadcrumb {
         span.chapter-title {
-            color: $body-bg;
+            color: $block-heading-color;
         }
     }
     .breadcrumb-item {
-        color: $body-bg;
+        color: $block-heading-color;
     }
     .breadcrumb-item::before {
-        color: $body-bg;
+        color: $block-heading-color;
     }
 }
 
