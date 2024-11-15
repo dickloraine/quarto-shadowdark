@@ -27,19 +27,13 @@ function Meta(meta)
 end
 
 function getSpell(hd)
-    -- local local_spell = json.decode(hd.text)
-
-    -- if local_spell then
-    --     return local_spell
-    -- end
-
     if not spell_data then
         return
     end
 
-    local name = stringify(hd.content)
+    local name = string.lower(stringify(hd.content))
     for _, spell in ipairs(spell_data) do
-        if spell.name == name then
+        if string.lower(spell.name) == name then
             return spell
         end
     end

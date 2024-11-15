@@ -102,9 +102,9 @@ These options are available:
 
 You can use a json file with monster stats and headers with the monster class to show them. You could also give the monster stats directly as json in a codeblock. This supports images, if they are given in the json. Of course you can also just format them yourself. 
 
-### Bandit{.monster}
+### BANDIT{.monster}
 
-### Black Pudding
+### BLACK PUDDING
 
 ``` monster
 {
@@ -154,9 +154,9 @@ Bandit
 ::: {.columns .unbalanced}
 Spells work similar to monsters.
 
-### Alarm{.spell}
+### ALARM{.spell}
 
-### Burning Hands
+### BURNING HANDS
 
 ``` spell
 {
@@ -171,7 +171,7 @@ Spells work similar to monsters.
   }
 ```
 
-### Create Undead{.spell}
+### CREATE UNDEAD{.spell}
 
 ![](assets/images/wizard.png){.bottom-right .no-html}
 :::
@@ -235,7 +235,7 @@ Magna magna sint amet sint fugiat eiusmod nisi nostrud tempor in. Cupidatat fugi
 
 Unsafe. Check for an encounter every 3 crawling rounds or after the PCs make loud noises (1d6, 1 = encounter).
 
-##### Encounters
+##### ENCOUNTERS
 
 | **d12**    | **Details**                                                     | 
 | :--------: | :-------------------------------------------------------------- |

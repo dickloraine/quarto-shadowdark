@@ -82,8 +82,9 @@ function getMonster(el)
         return
     end
     
+    text = string.lower(text)
     for _, monster in ipairs(monster_data) do
-        if monster.name == text then
+        if string.lower(monster.name) == text then
             return formatMonster(monster)
         end
     end
