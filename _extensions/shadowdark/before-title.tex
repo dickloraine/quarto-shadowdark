@@ -28,6 +28,10 @@ $endif$
 \newlength{\sdBleed}
 \newlength{\sdLeftAdjust}
 \newlength{\sdRightAdjust}
+\newlength{\sdTop}
+\newlength{\sdBottom}
+\newlength{\sdLeft}
+\newlength{\sdRight}
 $if(print-publish)$
 \setlength\sdBleed{$pagesizes.bleed$}
 \setlength\sdLeftAdjust{$pagesizes.bcor$}
@@ -37,13 +41,17 @@ $else$
 \setlength\sdLeftAdjust{$pagesizes.bcor$/2}
 \setlength\sdRightAdjust{$pagesizes.bcor$/2}
 $endif$
+\setlength\sdTop{$pagesizes.top$+\sdBleed}
+\setlength\sdBottom{$pagesizes.bottom$+\sdBleed}
+\setlength\sdLeft{$pagesizes.left$+\sdLeftAdjust}
+\setlength\sdRight{$pagesizes.right$+\sdRightAdjust}
 \usepackage[%
   paperwidth=$pagesizes.width$+\sdBleed,
   paperheight=$pagesizes.height$+\sdBleed+\sdBleed,
-  top=$pagesizes.top$+\sdBleed,
-  bottom=$pagesizes.bottom$+\sdBleed,
-  left=$pagesizes.left$+\sdLeftAdjust,
-  right=$pagesizes.right$+\sdRightAdjust
+  top=\sdTop,
+  bottom=\sdBottom,
+  left=\sdLeft,
+  right=\sdRight
 ]{geometry}
 
 % ------------------------------------------------------------------------------------- %
@@ -183,9 +191,9 @@ $endif$
   \clearpage
   \thispagestyle{empty}
   \AddToShipoutPictureBG*{\put(0.3cm+\sdLeftAdjust,2cm+\sdBleed){\includegraphics[height=17cm]{$title-left-art$}}}
-  \AddToShipoutPictureBG*{\put(\pagewidth - 3cm - +\sdRightAdjust,2cm+\sdBleed){\includegraphics[height=17cm]{$title-right-art$}}}
+  \AddToShipoutPictureBG*{\put(\pagewidth - 3cm - \sdRightAdjust,2cm+\sdBleed){\includegraphics[height=17cm]{$title-right-art$}}}
 
-  \newgeometry{left=21mm+$pagesizes.left$+\sdLeftAdjust,right=22mm+$pagesizes.right$+\sdRightAdjust, top=2.5cm+\sdBleed, bottom=1.25cm+\sdBleed}
+  \newgeometry{left=21mm+\sdLeft,right=22mm+\sdRight, top=2.5cm+\sdBleed, bottom=1.25cm+\sdBleed}
 
   \begin{center}
 

@@ -3,17 +3,9 @@ local Inlines = pandoc.Inlines
 local List = pandoc.List
 local stringify = pandoc.utils.stringify
 
-local bottom_margin = "1.5cm"
-local left_margin = "1cm"
 local image_source = nil
 
 function Meta(meta)
-    if meta["bottom-margin"] then
-        bottom_margin = stringify(meta["bottom-margin"])
-    end
-    if meta["left-margin"] then
-        left_margin = stringify(meta["left-margin"])
-    end
     if meta["image-source-directory"] then
         image_source = stringify(meta["image-source-directory"])
     end
@@ -96,20 +88,20 @@ function ImageLatex(img)
     elseif img.classes:includes("bottom") then
         local content = Inlines({})
         local width = img.attributes.lwidth or "\\textwidth"
-        content:insert(RawInline('latex', string.format('\\AddToShipoutPictureFG*{\\AtPageLowerLeft{\\put(%s,%s){\\includegraphics[%swidth=%s]{%s}}}}', left_margin, bottom_margin, options, width, img.src)))
+        content:insert(RawInline('latex', string.format('\\AddToShipoutPictureFG*{\\AtPageLowerLeft{\\put(\\sdLeft,\\sdBottom){\\includegraphics[%swidth=%s]{%s}}}}', options, width, img.src)))
         return content
     elseif img.classes:includes("bottom-left") then
         local content = Inlines({})
         local width = img.attributes.lwidth or "\\columnwidth"
-        local xshift = (img.attributes.xshift or "0cm") .. "+" .. left_margin
-        local yhift = (img.attributes.yshift or "0cm") .. "+" .. bottom_margin
+        local xshift = (img.attributes.xshift or "0cm") .. "+" .. "\\sdLeft"
+        local yhift = (img.attributes.yshift or "0cm") .. "+" .. "\\sdBottom"
         content:insert(RawInline('latex', string.format('\\AddToShipoutPictureFG*{\\AtPageLowerLeft{\\put(%s,%s){\\includegraphics[%swidth=%s]{%s}}}}', xshift, yhift, options, width, img.src)))
         return content
     elseif img.classes:includes("bottom-right") then
         local content = Inlines({})
         local width = img.attributes.lwidth or "\\columnwidth"
-        local xshift = (img.attributes.xshift or "0cm") .. "+" .. "\\columnwidth + \\columnsep + " .. left_margin
-        local yhift = (img.attributes.yshift or "0cm") .. " + " .. bottom_margin
+        local xshift = (img.attributes.xshift or "0cm") .. "+" .. "\\columnwidth + \\columnsep + " .. "\\sdLeft"
+        local yhift = (img.attributes.yshift or "0cm") .. " + " .. "\\sdBottom"
         content:insert(RawInline('latex', string.format('\\AddToShipoutPictureFG*{\\AtPageLowerLeft{\\put(%s,%s){\\includegraphics[%swidth=%s]{%s}}}}', xshift, yhift, options, width, img.src)))
         return content
     elseif img.classes:includes("place") then

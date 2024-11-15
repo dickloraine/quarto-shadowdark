@@ -72,10 +72,6 @@ contributes:
       # ir using title-is-cover, this adjusts where the title is displayed
       title-top-spacing: "1cm"
       page-number-adjustment: "-0.8"
-      top-margin: "1.25cm"
-      bottom-margin: "1.5cm"
-      left-margin: "1cm"
-      right-margin: "1cm"
       filters:
         - filters/columns.lua
         - filters/alignment.lua
