@@ -59,6 +59,7 @@ contributes:
         bottom: 1.5cm
         bcor: 0cm
         bleed: 0.32cm
+      bastard-title: true
       mainfont: Montserrat
       sansfont: Old Newspaper Font
       monofont: cascadia-code

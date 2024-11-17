@@ -333,6 +333,21 @@ $endif$
   \end{center}
 }
 
+\newcommand{\makebastardtitle}{%
+  \clearpage
+  \addtocounter{page}{-1}
+  \thispagestyle{empty}
+  \Large{$title$}
+  
+  $if(author)$
+  \large{$author$}
+  $endif$
+  \clearpage
+  \addtocounter{page}{-1}
+  \thispagestyle{empty}
+  \phantom{bastardback}
+}
+
 \newcommand{\makelegalback}{%
   \clearpage
   \thispagestyle{empty}
@@ -387,6 +402,10 @@ $endif$
     $else$
       \cleardoublepage
     $endif$
+  $endif$
+
+  $if(bastard-title)$
+  \makebastardtitle
   $endif$
 
   $if(no-title-page)$
